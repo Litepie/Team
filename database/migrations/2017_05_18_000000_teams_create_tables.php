@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TeamTables extends Migration
+class TeamworkSetupTables extends Migration
 {
 
     /**
@@ -13,13 +13,13 @@ class TeamTables extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ( Blueprint $table )
+        Schema::table( \config( 'teamwork.users_table' ), function ( Blueprint $table )
         {
             $table->integer( 'current_team_id' )->unsigned()->nullable();
         } );
 
 
-        Schema::create('teams', function ( Blueprint $table )
+        Schema::create( \config( 'teamwork.teams_table' ), function ( Blueprint $table )
         {
             $table->increments( 'id' )->unsigned();
             $table->integer( 'owner_id' )->unsigned()->nullable();
@@ -27,25 +27,25 @@ class TeamTables extends Migration
             $table->timestamps();
         } );
 
-        Schema::create('team_user', function ( Blueprint $table )
+        Schema::create( \config( 'teamwork.team_user_table' ), function ( Blueprint $table )
         {
             $table->integer( 'user_id' )->unsigned();
             $table->integer( 'team_id' )->unsigned();
             $table->timestamps();
 
             $table->foreign( 'user_id' )
-                ->references('id')
-                ->on('users')
+                ->references( \config( 'teamwork.user_foreign_key' ) )
+                ->on( \config( 'teamwork.users_table' ) )
                 ->onUpdate( 'cascade' )
                 ->onDelete( 'cascade' );
 
             $table->foreign( 'team_id' )
                 ->references( 'id' )
-                ->on('teams')
+                ->on( \config( 'teamwork.teams_table' ) )
                 ->onDelete( 'cascade' );
         } );
 
-        Schema::create('team_invites', function(Blueprint $table)
+        Schema::create( \config( 'teamwork.team_invites_table' ), function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -57,7 +57,7 @@ class TeamTables extends Migration
             $table->timestamps();
             $table->foreign( 'team_id' )
                 ->references( 'id' )
-                ->on('teams')
+                ->on( \config( 'teamwork.teams_table' ) )
                 ->onDelete( 'cascade' );
         });
     }
@@ -69,19 +69,19 @@ class TeamTables extends Migration
      */
     public function down()
     {
-        Schema::table('users', function(Blueprint $table)
+        Schema::table(\config( 'teamwork.users_table' ), function(Blueprint $table)
         {
             $table->dropColumn('current_team_id');
         });
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users'.'_user_id_foreign');
-            $table->dropForeign('users'.'_team_id_foreign');
+        Schema::table(\config('teamwork.team_user_table'), function (Blueprint $table) {
+            $table->dropForeign(\config('teamwork.team_user_table').'_user_id_foreign');
+            $table->dropForeign(\config('teamwork.team_user_table').'_team_id_foreign');
         });
 
-        Schema::drop('users');
-        Schema::drop('team_invites');
-        Schema::drop('teamwork.teams_table');
+        Schema::drop(\config('teamwork.team_user_table'));
+        Schema::drop(\config('teamwork.team_invites_table'));
+        Schema::drop(\config('teamwork.teams_table'));
 
     }
 }

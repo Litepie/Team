@@ -1,13 +1,15 @@
-<?php namespace Mpociot\Teamwork;
+<?php 
+
+namespace Lavalite\Team;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
-use Mpociot\Teamwork\Traits\TeamworkTeamInviteTrait;
+use Lavalite\Team\Traits\TeamInviteTrait;
 
 
 class TeamInvite extends Model
 {
-    use TeamworkTeamInviteTrait;
+    use TeamInviteTrait;
 
     /**
      * The database table used by the model.
@@ -24,6 +26,6 @@ class TeamInvite extends Model
     public function __construct( array $attributes = [ ] )
     {
         parent::__construct( $attributes );
-        $this->table = Config::get( 'teamwork.team_invites_table' );
+        $this->table = config( 'team.team_invites_table' );
     }
 }

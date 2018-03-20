@@ -1,13 +1,14 @@
-<?php namespace Mpociot\Teamwork;
+<?php 
+namespace Lavalite\Team;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
-use Mpociot\Teamwork\Traits\TeamworkTeamTrait;
+use Lavalite\Team\Traits\TeamTrait;
 
 
-class TeamworkTeam extends Model
+class Team extends Model
 {
-    use TeamworkTeamTrait;
+    use TeamTrait;
 
     /**
      * The database table used by the model.
@@ -29,6 +30,6 @@ class TeamworkTeam extends Model
     public function __construct( array $attributes = [ ] )
     {
         parent::__construct( $attributes );
-        $this->table = Config::get( 'teamwork.teams_table' );
+        $this->table = config( 'team.teams_table' );
     }
 }

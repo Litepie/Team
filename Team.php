@@ -1,7 +1,8 @@
-<?php namespace Mpociot\Teamwork;
+<?php 
+namespace Lavalite\Team;
 
 use Illuminate\Support\Facades\Config;
-use Mpociot\Teamwork\Events\UserInvitedToTeam;
+use Lavalite\Team\Events\UserInvitedToTeam;
 
 /**
  * This file is part of Teamwork
@@ -70,7 +71,7 @@ class Teamwork
             throw new \Exception('The provided object has no "email" attribute and is not a string.');
         }
 
-        $invite               = $this->app->make(Config::get('teamwork.invite_model'));
+        $invite               = $this->app->make(config('teamwork.invite_model'));
         $invite->user_id      = $this->user()->getKey();
         $invite->team_id      = $team;
         $invite->type         = 'invite';
@@ -103,7 +104,7 @@ class Teamwork
         {
             $team = $team["id"];
         }
-        return $this->app->make(Config::get('teamwork.invite_model'))->where('email', "=", $email)->where('team_id', "=", $team )->first() ? true : false;
+        return $this->app->make(config('teamwork.invite_model'))->where('email', "=", $email)->where('team_id', "=", $team )->first() ? true : false;
     }
 
     /**
@@ -112,7 +113,7 @@ class Teamwork
      */
     public function getInviteFromAcceptToken( $token )
     {
-        return $this->app->make(Config::get('teamwork.invite_model'))->where('accept_token', '=', $token)->first();
+        return $this->app->make(config('teamwork.invite_model'))->where('accept_token', '=', $token)->first();
     }
 
     /**
@@ -130,7 +131,7 @@ class Teamwork
      */
     public function getInviteFromDenyToken( $token )
     {
-        return $this->app->make(Config::get('teamwork.invite_model'))->where('deny_token', '=', $token)->first();
+        return $this->app->make(config('teamwork.invite_model'))->where('deny_token', '=', $token)->first();
     }
 
     /**
