@@ -1,10 +1,10 @@
 <?php
 
-namespace Litepie\Team\Requests;
+namespace Litepie\Team\Http\Requests;
 
 use Litepie\Http\Request\AbstractRequest;
 
-class TeamRequest extends AbstractRequest
+class TeamResourceRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +17,7 @@ class TeamRequest extends AbstractRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access team module,
-            return $this->user()->can('view', app(config('team.team.model.repository')));
+            return $this->user()->can('view', app(config('team.team.model.model')));
         }
 
         if ($this->isWorkflow()) {
@@ -42,6 +42,7 @@ class TeamRequest extends AbstractRequest
 
         // Determine if the user is authorized to view the module.
         return $this->can('view');
+
     }
 
     /**
@@ -70,4 +71,5 @@ class TeamRequest extends AbstractRequest
 
         ];
     }
+
 }
